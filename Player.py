@@ -17,17 +17,35 @@ def player_mover(server_json):
 
     player = server_json['state']['current'] # 0 ou 1
     position = get_position(server_json, player) 
-    move_available = callfunction(board, position)
+    move_available = callfunction(board, position) # [True, True, False, True]
     print(move_available)
-    randommove = get_random_true_index(move_available)
-    if randommove == 0:
-        return right_move(position)
-    elif randommove == 1:
-        return left_move(position)
-    elif randommove == 2:
-        return up_move(position)
-    elif randommove == 3:
-        return down_move(position)
+    #randommove = get_random_true_index(move_available)# 0 as True
+    listmoveavailable = get_list_position_true_index(move_available)
+    if player == 0:
+        if 3 in listmoveavailable:
+            return down_move(position)
+        elif 1 in listmoveavailable and 0 in listmoveavailable:
+            return random.choice([left_move(position), right_move(position)]) 
+        elif 1 in listmoveavailable:
+            return left_move(position)
+        elif 0 in listmoveavailable:
+            return right_move(position)
+        elif 2 in listmoveavailable:
+            return up_move(position)
+    else:
+        if 2 in listmoveavailable:
+            return up_move(position)
+        elif 1 in listmoveavailable and 0 in listmoveavailable:
+            return random.choice([left_move(position), right_move(position)]) 
+        elif 1 in listmoveavailable:
+            return left_move(position)
+        elif 0 in listmoveavailable:
+            return right_move(position)
+        elif 3 in listmoveavailable:
+            return down_move(position)
+
+        
+
 
 
 def right_move(position):
@@ -62,6 +80,10 @@ def down_move(position):
 def get_random_true_index(move_available):
     true_indices = [i for i, val in enumerate(move_available) if val]  # Obtient les indices des éléments True
     return random.choice(true_indices)  # Retourne un indice aléatoire parmi les éléments True
+
+def get_list_position_true_index(move_available):
+    return [i for i, val in enumerate(move_available) if val]
+
 
 def right_available(board, position):
     if position[1] + 2 > 16 or position[1] + 1 > 16:
