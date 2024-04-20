@@ -3,6 +3,7 @@ import json
 import random
 
 move_played = 0
+message = "Too far for Ronaldo to think about it"
 
 def send_json_data(json_data, server_address):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
@@ -219,28 +220,32 @@ def down_move(position):
   }
 
 def right_jump_move(position):
-
+    global message
+    message = "Hop"
     return {
     "type": "pawn", 
     "position": [[position[0], position[1] + 4]]
   }
 
 def left_jump_move(position):
-
+    global message
+    message = "Hop"
     return {
     "type": "pawn", 
     "position": [[position[0], position[1] - 4]]
   }
 
 def up_jump_move(position):
-
+    global message
+    message = "Hop"
     return {
     "type": "pawn", 
     "position": [[position[0] - 4, position[1]]]
   }
 
 def down_jump_move(position):
-
+    global message
+    message = "Hop"
     return {
     "type": "pawn", 
     "position": [[position[0] + 4, position[1]]]
@@ -390,7 +395,9 @@ def handle_ping_pong():
                     errors = server_json["errors"]
                     player_move = player_mover(server_json)
                     print(player_move)
-                    response_move_string = {"response": "move", "move": player_move, "message": "Too far for Ronaldo to think about it"}
+                    global message
+                    response_move_string = {"response": "move", "move": player_move, "message": message}
+                    message = "Too far for Ronaldo to think about it"
                     print(response_move_string)
                     response_move_json = json.dumps(response_move_string)
                     player.sendall(response_move_json.encode())
