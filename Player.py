@@ -99,14 +99,22 @@ def player_mover(server_json):
             else:
                 play = 'move'
                 print('Peut pas mettre de Blocker')
+
     if play == 'move':
-        print('On a move') 
-        move_available = callfunction(board, position) # [True, True, False, True]
+        print('On a move')
+        opponent_player = get_opponent_player(player) 
+        move_available = callfunction(board, position, opponent_player) # [True, True, False, True]
         #randommove = get_random_true_index(move_available)# 0 as True
         listmoveavailable = get_list_position_true_index(move_available)
         if player == 0:
             if 3 in listmoveavailable:
                 return down_move(position)
+            elif 7 in listmoveavailable:
+                return down_jump_move(position)
+            elif 4 in listmoveavailable:
+                return right_jump_move(position)
+            elif 5 in listmoveavailable:
+                return left_jump_move(position)
             elif 1 in listmoveavailable and 0 in listmoveavailable:
                 return random.choice([left_move(position), right_move(position)]) 
             elif 1 in listmoveavailable:
@@ -115,9 +123,17 @@ def player_mover(server_json):
                 return right_move(position)
             elif 2 in listmoveavailable:
                 return up_move(position)
+            elif 6 in listmoveavailable:
+                return up_jump_move(position)
         else:
             if 2 in listmoveavailable:
                 return up_move(position)
+            elif 6 in listmoveavailable:
+                return up_jump_move(position)
+            elif 4 in listmoveavailable:
+                return right_jump_move(position)
+            elif 5 in listmoveavailable:
+                return left_jump_move(position)
             elif 1 in listmoveavailable and 0 in listmoveavailable:
                 return random.choice([left_move(position), right_move(position)]) 
             elif 1 in listmoveavailable:
@@ -126,6 +142,9 @@ def player_mover(server_json):
                 return right_move(position)
             elif 3 in listmoveavailable:
                 return down_move(position)
+            elif 7 in listmoveavailable:
+                return down_jump_move(position)
+            
 
 def listposblockeravailable(listblockeravailable, posblocker):
     result = []
@@ -199,6 +218,33 @@ def down_move(position):
     "position": [[position[0] + 2, position[1]]]
   }
 
+def right_jump_move(position):
+
+    return {
+    "type": "pawn", 
+    "position": [[position[0], position[1] + 4]]
+  }
+
+def left_jump_move(position):
+
+    return {
+    "type": "pawn", 
+    "position": [[position[0], position[1] - 4]]
+  }
+
+def up_jump_move(position):
+
+    return {
+    "type": "pawn", 
+    "position": [[position[0] - 4, position[1]]]
+  }
+
+def down_jump_move(position):
+
+    return {
+    "type": "pawn", 
+    "position": [[position[0] + 4, position[1]]]
+  }
   
 def get_random_true_index(move_available):
     true_indices = [i for i, val in enumerate(move_available) if val]  # Obtient les indices des éléments True
@@ -252,13 +298,63 @@ def down_available(board, position):
             return True
         else:
             return False
+        
+def right_jump_available(board, position, opponent_player):
+    if position[1] >= 14 :
+        return False
+    else:
+        listcase = board[position[0]]
+        # position = [2,8]
+        # position[0] = 2
+        # board[0] = liste d'indice 0
+        # board[position[0]] = board[2] = liste d'indice 2
+        if listcase[position[1] + 2] == opponent_player: 
+            return True
+        else:
+            return False
+        
+def left_jump_available(board, position, opponent_player):
+    if position[1] <= 2 :
+        return False
+    else:
+        listcase = board[position[0]]
+        if listcase[position[1] - 2] == opponent_player:
+            return True
+        else:
+            return False
+        
+def up_jump_available(board, position, opponent_player):
+    if position[0] <= 2 :
+        return False
+    else:
+        listcase = board[position[0] - 2]
+        if listcase[position[1]] == opponent_player:
+            return True
+        else:
+            return False
+        
+def down_jump_available(board, position, opponent_player):
+    if position[0] >= 14 :
+        return False
+    else:
+        listcase = board[position[0] + 2]
+        if listcase[position[1]] == opponent_player:
+            return True
+        else:
+            return False
     
-def callfunction(board, position):
+    
+    
+def callfunction(board, position, opponent_player):
     listefunction = []
     listefunction.append(right_available(board, position))
     listefunction.append(left_available(board, position))
     listefunction.append(up_available(board, position))
     listefunction.append(down_available(board, position))
+    listefunction.append(right_jump_available(board,position,opponent_player))
+    listefunction.append(left_jump_available(board,position,opponent_player))
+    listefunction.append(up_jump_available(board,position,opponent_player))
+    listefunction.append(down_jump_available(board,position,opponent_player))
     return listefunction
 
 
@@ -305,7 +401,7 @@ def handle_ping_pong():
 json_data = {
     "request": "subscribe",
     "port": 8850,
-    "name": "Ayoub",
+    "name": "Blocker",
     "matricules": ["21061", "52643"]
 }
 
