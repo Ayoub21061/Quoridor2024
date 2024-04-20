@@ -313,7 +313,7 @@ def right_jump_available(board, position, opponent_player):
         # position[0] = 2
         # board[0] = liste d'indice 0
         # board[position[0]] = board[2] = liste d'indice 2
-        if listcase[position[1] + 2] == opponent_player: 
+        if listcase[position[1] + 2] == opponent_player and listcase[position[1] + 1] == 3 and listcase[position[1] + 3] == 3: 
             return True
         else:
             return False
@@ -323,7 +323,7 @@ def left_jump_available(board, position, opponent_player):
         return False
     else:
         listcase = board[position[0]]
-        if listcase[position[1] - 2] == opponent_player:
+        if listcase[position[1] - 2] == opponent_player and listcase[position[1] - 1] == 3 and listcase[position[1] - 3] == 3:
             return True
         else:
             return False
@@ -333,7 +333,9 @@ def up_jump_available(board, position, opponent_player):
         return False
     else:
         listcase = board[position[0] - 2]
-        if listcase[position[1]] == opponent_player:
+        listcase1 = board[position[0] - 1]
+        listcase3 = board[position[0] - 3]
+        if listcase[position[1]] == opponent_player and listcase1[position[1]] == 3 and listcase3[position[1]] == 3:
             return True
         else:
             return False
@@ -343,7 +345,9 @@ def down_jump_available(board, position, opponent_player):
         return False
     else:
         listcase = board[position[0] + 2]
-        if listcase[position[1]] == opponent_player:
+        listcase1 = board[position[0] + 1]
+        listcase3 = board[position[0] + 3]
+        if listcase[position[1]] == opponent_player and listcase1[position[1]] == 3 and listcase3[position[1]] == 3:
             return True
         else:
             return False
