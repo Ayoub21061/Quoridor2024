@@ -35,18 +35,30 @@ def player_mover(server_json):
                         pos2 = 2
                         return play_blocker(blockerlist, pos1, pos2)
                 elif opponent_position[1] > 14:
-                    if listblockeravailable[14] == 3: 
+                    if listblockeravailable[14] == 3:
                         blockerlist = opponent_position[0] + 1 # [0,8] -> 0 -> 0 + 1 -> 1
                         pos1 = 14
                         pos2 = 16
                         return play_blocker(blockerlist, pos1, pos2)
                 else:
-                    leftorrightavailable = listposblockeravailable(listblockeravailable, opponent_position[1])
+                    leftorrightavailable = listposblockeravailable(listblockeravailable, board, opponent_position[1], opponent_position[0])
                     true_indices = [i for i, val in enumerate(leftorrightavailable) if val]
-                    if len(true_indices) == 2:
-                        index = random.choice(true_indices)
-                    elif len(true_indices) == 1:
-                        index = true_indices[0]
+                    if 0 in true_indices:
+                        index = 0
+                    elif 1 in true_indices:
+                        index = 1
+                    elif 2 in true_indices:
+                        index = 2
+                    elif 3 in true_indices:
+                        index = 3
+                    # if len(true_indices) == 4:
+                    #     index = random.choice(true_indices)
+                    # elif len(true_indices) == 3:
+                    #     index = random.choice(true_indices)
+                    # elif len(true_indices) == 2:
+                    #     index = random.choice(true_indices)
+                    # elif len(true_indices) == 1:
+                    #     index = true_indices[0]
                     elif len(true_indices) == 0:
                         play = 'move'
 
@@ -60,6 +72,18 @@ def player_mover(server_json):
                         pos2 = opponent_position[1]
                         blockerlist = opponent_position[0] + 1
                         return play_blocker(blockerlist, pos1, pos2)
+                    elif index == 2:
+                        pos1 = opponent_position[1] - 1
+                        pos2 = opponent_position[1] - 1
+                        blockerlist = opponent_position[0] 
+                        blockerlist2 = opponent_position[0] - 2
+                        return play_blocker_vertical(blockerlist, blockerlist2, pos1, pos2)
+                    elif index == 3:
+                        pos1 = opponent_position[1] + 1
+                        pos2 = opponent_position[1] + 1
+                        blockerlist = opponent_position[0] 
+                        blockerlist2 = opponent_position[0] - 2
+                        return play_blocker_vertical(blockerlist, blockerlist2, pos1, pos2)
             else:
                 play = 'move' 
                 print('Peut pas mettre de Blocker')       
@@ -79,14 +103,27 @@ def player_mover(server_json):
                         pos2 = 16
                         return play_blocker(blockerlist, pos1, pos2)
                 else:
-                    leftorrightavailable = listposblockeravailable(listblockeravailable, opponent_position[1])
+                    leftorrightavailable = listposblockeravailable(listblockeravailable, board, opponent_position[1], opponent_position[0])
                     true_indices = [i for i, val in enumerate(leftorrightavailable) if val]
-                    if len(true_indices) == 2:
-                        index = random.choice(true_indices)
-                    elif len(true_indices) == 1:
-                        index = true_indices[0]
+                    if 0 in true_indices:
+                        index = 0
+                    elif 1 in true_indices:
+                        index = 1
+                    elif 2 in true_indices:
+                        index = 2
+                    elif 3 in true_indices:
+                        index = 3
+                    # if len(true_indices) == 4:
+                    #     index = random.choice(true_indices)
+                    # elif len(true_indices) == 3:
+                    #     index = random.choice(true_indices)
+                    # elif len(true_indices) == 2:
+                    #     index = random.choice(true_indices)
+                    # elif len(true_indices) == 1:
+                    #     index = true_indices[0]
                     elif len(true_indices) == 0:
                         play = 'move'
+
                     if index == 0:
                         pos1 = opponent_position[1] - 2 
                         pos2 = opponent_position[1]
@@ -97,6 +134,18 @@ def player_mover(server_json):
                         pos2 = opponent_position[1]
                         blockerlist = opponent_position[0] - 1
                         return play_blocker(blockerlist, pos1, pos2)
+                    elif index == 2:
+                        pos1 = opponent_position[1] - 1
+                        pos2 = opponent_position[1] - 1
+                        blockerlist = opponent_position[0] 
+                        blockerlist2 = opponent_position[0] + 2
+                        return play_blocker_vertical(blockerlist, blockerlist2, pos1, pos2)
+                    elif index == 3:
+                        pos1 = opponent_position[1] + 1
+                        pos2 = opponent_position[1] + 1
+                        blockerlist = opponent_position[0] 
+                        blockerlist2 = opponent_position[0] + 2
+                        return play_blocker_vertical(blockerlist, blockerlist2, pos1, pos2)
             else:
                 play = 'move'
                 print('Peut pas mettre de Blocker')
@@ -108,6 +157,7 @@ def player_mover(server_json):
         #randommove = get_random_true_index(move_available)# 0 as True
         listmoveavailable = get_list_position_true_index(move_available)
         if player == 0:
+            listpathavailable = board[position[0] + 1]
             if 3 in listmoveavailable:
                 return down_move(position)
             elif 7 in listmoveavailable:
@@ -117,7 +167,11 @@ def player_mover(server_json):
             elif 5 in listmoveavailable:
                 return left_jump_move(position)
             elif 1 in listmoveavailable and 0 in listmoveavailable:
-                return random.choice([left_move(position), right_move(position)]) 
+                fastestmove = verifyblocker(listpathavailable, position[1])
+                if fastestmove == "right":
+                    return right_move(position)
+                else:
+                    return left_move(position)
             elif 1 in listmoveavailable:
                 return left_move(position)
             elif 0 in listmoveavailable:
@@ -127,6 +181,7 @@ def player_mover(server_json):
             elif 6 in listmoveavailable:
                 return up_jump_move(position)
         else:
+            listpathavailable = board[position[0] - 1]
             if 2 in listmoveavailable:
                 return up_move(position)
             elif 6 in listmoveavailable:
@@ -136,7 +191,11 @@ def player_mover(server_json):
             elif 5 in listmoveavailable:
                 return left_jump_move(position)
             elif 1 in listmoveavailable and 0 in listmoveavailable:
-                return random.choice([left_move(position), right_move(position)]) 
+                fastestmove = verifyblocker(listpathavailable, position[1])
+                if fastestmove == "right":
+                    return right_move(position)
+                else:
+                    return left_move(position)
             elif 1 in listmoveavailable:
                 return left_move(position)
             elif 0 in listmoveavailable:
@@ -145,12 +204,37 @@ def player_mover(server_json):
                 return down_move(position)
             elif 7 in listmoveavailable:
                 return down_jump_move(position)
-            
 
-def listposblockeravailable(listblockeravailable, posblocker):
+# Les 3 fonctions suivantes permettent de déterminer le chemin le plus rapide pour avancer.       
+def verifyblocker(listpathavailable, pos_joueur):
+    path_indices = get_index_path_available(listpathavailable)
+    closest_index = find_closest_index(path_indices, pos_joueur)
+    if closest_index > pos_joueur:
+        return "right"
+    else:
+        return "left"
+
+def get_index_path_available(listpathavailable):
+    return [i for i, val in enumerate(listpathavailable) if val == 3]
+
+def find_closest_index(indices, target):
+    closest_index = None
+    min_distance = float('inf')  # Initialiser la distance minimale à l'infini
+    
+    for index in indices:
+        distance = abs(index - target)  # Calculer la distance absolue entre l'indice et la position du joueur
+        if distance < min_distance:  # Mettre à jour l'indice le plus proche si la distance actuelle est plus petite
+            min_distance = distance
+            closest_index = index
+    
+    return closest_index
+
+def listposblockeravailable(listblockeravailable, board, posblocker, posblocker2):
     result = []
     result.append(blocker_left(listblockeravailable, posblocker))
     result.append(blocker_right(listblockeravailable, posblocker))
+    result.append(blocker_vert_left_up(board, posblocker, posblocker2))
+    result.append(blocker_vert_right_up(board, posblocker, posblocker2))
     return result
 
 def blocker_left(listeblockeravailable, posblocker):
@@ -166,12 +250,44 @@ def blocker_right(listeblockeravailable, posblocker):
     else:
         return False
     
+def blocker_vert_right_up(board, posblocker, posblocker2):  
+    #posblocker = opponent_position[1]
+    #posblocker2 = opponent_position[0]
+    if posblocker2 <= 2:
+        return False 
+    else:
+        listblocker2 = board[posblocker2 + 2]
+        listblocker1 = board[posblocker2]
+        if listblocker1[posblocker + 1] == 3 and listblocker2[posblocker + 1] == 3:
+            return True
+        else: 
+            return False
+    
+def blocker_vert_left_up(board, posblocker, posblocker2):  
+    #posblocker = opponent_position[1]
+    #posblocker2 = opponent_position[0]
+    if posblocker2 <= 2:
+        return False
+    else:
+        listblocker2 = board[posblocker2 + 2]
+        listblocker1 = board[posblocker2]
+        if listblocker1[posblocker - 1] == 3 and listblocker2[posblocker - 1] == 3:
+            return True
+        else: 
+            return False
+    
 
 def play_blocker(blockerlist, pos1, pos2):
     return {
     "type": "blocker", 
     "position": [[blockerlist,pos1], [blockerlist,pos2]]  
 }
+
+def play_blocker_vertical(blockerlist, blockerlist2, pos1, pos2):
+    return {
+    "type": "blocker", 
+    "position": [[blockerlist,pos1], [blockerlist2,pos2]]
+} 
 
 
 def get_opponent_player(player):
@@ -221,7 +337,7 @@ def down_move(position):
 
 def right_jump_move(position):
     global message
-    message = " Petit saut de mouton!"
+    message = "Hop"
     return {
     "type": "pawn", 
     "position": [[position[0], position[1] + 4]]
@@ -229,7 +345,7 @@ def right_jump_move(position):
 
 def left_jump_move(position):
     global message
-    message = " Petit saut de mouton !"
+    message = "Hop"
     return {
     "type": "pawn", 
     "position": [[position[0], position[1] - 4]]
@@ -237,7 +353,7 @@ def left_jump_move(position):
 
 def up_jump_move(position):
     global message
-    message = " Petit saut de mouton !"
+    message = "Hop"
     return {
     "type": "pawn", 
     "position": [[position[0] - 4, position[1]]]
@@ -245,7 +361,7 @@ def up_jump_move(position):
 
 def down_jump_move(position):
     global message
-    message = " Petit saut de mouton !"
+    message = "Hop"
     return {
     "type": "pawn", 
     "position": [[position[0] + 4, position[1]]]
@@ -284,9 +400,9 @@ def up_available(board, position):
     if position[0] - 2 < 0 or position[0] - 1 < 0:
         return False
     else:
-        listcase = board[position[0] - 2] # Je récupère la liste dans laquelle je me trouve mais dans logique du jeu je regarde le déplacement verticale 
+        listcase = board[position[0]-2] # Je récupère la liste dans laquelle je me trouve mais dans logique du jeu je regarde le déplacement verticale 
         print(f'listcase{listcase}')
-        listblocker = board[position[0] - 1] # La liste où il y'a le blocker
+        listblocker = board[position[0]-1] # La liste où il y'a le blocker
         if listblocker[position[1]] == 3 and listcase[position[1]] == 2: # Si je me déplaces en haut et que c'est un blocker vide et que c'est une case vide 
             return True
         else:
@@ -333,9 +449,9 @@ def up_jump_available(board, position, opponent_player):
         return False
     else:
         listcase = board[position[0] - 2]
-        listblocker = board[position[0] - 1]
-        listblocker2 = board[position[0] - 3]
-        if listcase[position[1]] == opponent_player and listblocker[position[1]] == 3 and listblocker2[position[1]] == 3:
+        listcase1 = board[position[0] - 1]
+        listcase3 = board[position[0] - 3]
+        if listcase[position[1]] == opponent_player and listcase1[position[1]] == 3 and listcase3[position[1]] == 3:
             return True
         else:
             return False
@@ -345,9 +461,9 @@ def down_jump_available(board, position, opponent_player):
         return False
     else:
         listcase = board[position[0] + 2]
-        listblocker = board[position[0] + 1]
-        listblocker2 = board[position[0] + 3]
-        if listcase[position[1]] == opponent_player and listblocker[position[1]] == 3 and listblocker2[position[1]] == 3:
+        listcase1 = board[position[0] + 1]
+        listcase3 = board[position[0] + 3]
+        if listcase[position[1]] == opponent_player and listcase1[position[1]] == 3 and listcase3[position[1]] == 3:
             return True
         else:
             return False
@@ -401,7 +517,7 @@ def handle_ping_pong():
                     print(player_move)
                     global message
                     response_move_string = {"response": "move", "move": player_move, "message": message}
-                    message = "TU PASSES LE BAC ? NON, ALORS ARRÊTE DE PANIQUER"
+                    message = "Too far for Ronaldo to think about it"
                     print(response_move_string)
                     response_move_json = json.dumps(response_move_string)
                     player.sendall(response_move_json.encode())
@@ -413,11 +529,14 @@ json_data = {
     "request": "subscribe",
     "port": 8850,
     "name": "Ayoub",
-    "matricules": ["21061", "52643"]
+    "matricules": ["21061", "56625"]
 }
 
 # Définir l'adresse IP et le port du serveur local
-server_address = ('172.17.10.59', 3000)
+server_address = ('localhost', 3000)
 
 send_json_data(json_data, server_address)
 handle_ping_pong()
+
+# Définir limite de placement des blockers (doit laisser 1 chemin au min.)
+# Définir le contour du plateau de jeu pour blocker verticaux.
