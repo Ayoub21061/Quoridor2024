@@ -35,7 +35,7 @@ def player_mover(server_json):
                         pos2 = 2
                         return play_blocker(blockerlist, pos1, pos2)
                 elif opponent_position[1] > 14:
-                    if listblockeravailable[14] == 3:
+                    if listblockeravailable[14] == 3: 
                         blockerlist = opponent_position[0] + 1 # [0,8] -> 0 -> 0 + 1 -> 1
                         pos1 = 14
                         pos2 = 16
@@ -221,7 +221,7 @@ def down_move(position):
 
 def right_jump_move(position):
     global message
-    message = "Hop"
+    message = " Petit saut de mouton!"
     return {
     "type": "pawn", 
     "position": [[position[0], position[1] + 4]]
@@ -229,7 +229,7 @@ def right_jump_move(position):
 
 def left_jump_move(position):
     global message
-    message = "Hop"
+    message = " Petit saut de mouton !"
     return {
     "type": "pawn", 
     "position": [[position[0], position[1] - 4]]
@@ -237,7 +237,7 @@ def left_jump_move(position):
 
 def up_jump_move(position):
     global message
-    message = "Hop"
+    message = " Petit saut de mouton !"
     return {
     "type": "pawn", 
     "position": [[position[0] - 4, position[1]]]
@@ -245,7 +245,7 @@ def up_jump_move(position):
 
 def down_jump_move(position):
     global message
-    message = "Hop"
+    message = " Petit saut de mouton !"
     return {
     "type": "pawn", 
     "position": [[position[0] + 4, position[1]]]
@@ -284,9 +284,9 @@ def up_available(board, position):
     if position[0] - 2 < 0 or position[0] - 1 < 0:
         return False
     else:
-        listcase = board[position[0]-2] # Je récupère la liste dans laquelle je me trouve mais dans logique du jeu je regarde le déplacement verticale 
+        listcase = board[position[0] - 2] # Je récupère la liste dans laquelle je me trouve mais dans logique du jeu je regarde le déplacement verticale 
         print(f'listcase{listcase}')
-        listblocker = board[position[0]-1] # La liste où il y'a le blocker
+        listblocker = board[position[0] - 1] # La liste où il y'a le blocker
         if listblocker[position[1]] == 3 and listcase[position[1]] == 2: # Si je me déplaces en haut et que c'est un blocker vide et que c'est une case vide 
             return True
         else:
@@ -333,9 +333,9 @@ def up_jump_available(board, position, opponent_player):
         return False
     else:
         listcase = board[position[0] - 2]
-        listcase1 = board[position[0] - 1]
-        listcase3 = board[position[0] - 3]
-        if listcase[position[1]] == opponent_player and listcase1[position[1]] == 3 and listcase3[position[1]] == 3:
+        listblocker = board[position[0] - 1]
+        listblocker2 = board[position[0] - 3]
+        if listcase[position[1]] == opponent_player and listblocker[position[1]] == 3 and listblocker2[position[1]] == 3:
             return True
         else:
             return False
@@ -345,9 +345,9 @@ def down_jump_available(board, position, opponent_player):
         return False
     else:
         listcase = board[position[0] + 2]
-        listcase1 = board[position[0] + 1]
-        listcase3 = board[position[0] + 3]
-        if listcase[position[1]] == opponent_player and listcase1[position[1]] == 3 and listcase3[position[1]] == 3:
+        listblocker = board[position[0] + 1]
+        listblocker2 = board[position[0] + 3]
+        if listcase[position[1]] == opponent_player and listblocker[position[1]] == 3 and listblocker2[position[1]] == 3:
             return True
         else:
             return False
@@ -401,7 +401,7 @@ def handle_ping_pong():
                     print(player_move)
                     global message
                     response_move_string = {"response": "move", "move": player_move, "message": message}
-                    message = "Too far for Ronaldo to think about it"
+                    message = "TU PASSES LE BAC ? NON, ALORS ARRÊTE DE PANIQUER"
                     print(response_move_string)
                     response_move_json = json.dumps(response_move_string)
                     player.sendall(response_move_json.encode())
@@ -412,12 +412,12 @@ def handle_ping_pong():
 json_data = {
     "request": "subscribe",
     "port": 8850,
-    "name": "Blocker",
+    "name": "Ayoub",
     "matricules": ["21061", "52643"]
 }
 
 # Définir l'adresse IP et le port du serveur local
-server_address = ('localhost', 3000)
+server_address = ('172.17.10.59', 3000)
 
 send_json_data(json_data, server_address)
 handle_ping_pong()
