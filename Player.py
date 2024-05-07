@@ -40,12 +40,16 @@ def player_mover(server_json):
                         pos1 = 0
                         pos2 = 2
                         return play_blocker(blockerlist, pos1, pos2)
+                    else :
+                        play = "move"
                 elif opponent_position[1] > 14:
                     if listblockeravailable[14] == 3:
                         blockerlist = opponent_position[0] + 1 # [0,8] -> 0 -> 0 + 1 -> 1
                         pos1 = 14
                         pos2 = 16
                         return play_blocker(blockerlist, pos1, pos2)
+                    else :
+                        play = "move"
                 else:
                     leftorrightavailable = listposblockeravailable(listblockeravailable, board, opponent_position[1], opponent_position[0], listblockeravailableup, listblockeravailabledown)
                     true_indices = [i for i, val in enumerate(leftorrightavailable) if val]
@@ -112,12 +116,16 @@ def player_mover(server_json):
                         pos1 = 0
                         pos2 = 2
                         return play_blocker(blockerlist, pos1, pos2)
+                    else : 
+                        play = "move"
                 elif opponent_position[1] > 14:
                     if listblockeravailable[14] == 3:
                         blockerlist = opponent_position[0] - 1 # [0,8] -> 0 -> 0 + 1 -> 1
                         pos1 = 14
                         pos2 = 16
                         return play_blocker(blockerlist, pos1, pos2)
+                    else :
+                        play = "move"
                 else:
                     leftorrightavailable = listposblockeravailable(listblockeravailable, board, opponent_position[1], opponent_position[0], listblockeravailableup, listblockeravailabledown)
                     true_indices = [i for i, val in enumerate(leftorrightavailable) if val]
@@ -178,7 +186,6 @@ def player_mover(server_json):
         print('On a move')
         opponent_player = get_opponent_player(player) 
         move_available = callfunction(board, position, opponent_player) # [True, True, False, True]
-        #randommove = get_random_true_index(move_available)# 0 as True
         listmoveavailable = get_list_position_true_index(move_available)
         if player == 0:
             listpathavailable = board[position[0] + 1]
