@@ -1,4 +1,4 @@
-# Joueur pour un jeu Quoridor
+# Projet Quoridor
 
 ![alt text](./images/les_activites_de_maman_quoridor-1024x906.jpg)
 
