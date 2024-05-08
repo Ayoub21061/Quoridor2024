@@ -11,13 +11,13 @@ Afin de comprendre au mieux, vous trouvez les explications nécessaires pour com
 
 Quoridor est un jeu de société dans lequel les règles sont les suivantes: Deux joueurs se font face sur un plateau. Chaque joueur a la possibilité de jouer un déplacement ou un bloqueur lors de chaque tour. L'objectif est d'arriver dans le camp adverse le plus vite possible. Pour ce faire, il est important d'élaborer certaines stratégies de jeu en réflechissant au mouvement et placement de bloqueurs possible selon l'état du jeu actuel.
 
-C'est pourquoi il est nécessiare d'établir une stratégie afin d'optimiser les chances de vaincre l'adverse.
+C'est pourquoi il est nécessaire d'établir une stratégie afin d'optimiser les chances de vaincre l'adverse.
 
 ## Stratégie 
 
 ### Déplacement 
 
-Les déplacements sont choisi parmis une liste de valeurs booléenes qui renvoie `True` ou `False` selon l'état du jeu actuel correspondant aux coups qui sont possible de jouer.
+Les déplacements sont choisi parmis une liste de valeurs booléenes qui renvoie `True` ou `False` selon l'état du jeu actuel correspondant aux coups qui sont possibles de jouer.
 
 ```py
  if player == 0:
@@ -76,7 +76,7 @@ Chaque nombre correspondant à un indice dans une liste comprenant les mouvement
 move_available = callfunction(board, position, opponent_player)
 listmoveavailable = get_list_position_true_index(move_available)
 ```
-Voici la liste de déplacement possible.
+Voici la liste de déplacements possibles.
 
 ```py
 def callfunction(board, position, opponent_player):
@@ -101,7 +101,7 @@ Pour les bloqueurs, la logique est la même que celle établi pour les déplacem
 leftorrightavailable = listposblockeravailable(listblockeravailable, board, opponent_position[1], opponent_position[0], listblockeravailableup, listblockeravailabledown)
 ```
 
-La liste comprenant les placements de bloqueurs possible :
+La liste comprenant les placements de bloqueurs possibles :
 
 ```py
 def listposblockeravailable(listblockeravailable, board, posblocker, posblocker2, listblockeravailableup, listblockeravailabledown):
@@ -138,7 +138,7 @@ else:
 
 ## Bibliothèques utilisées 
 
-Afin de parfaire le code du joueur, il est nécessaire d'utiliser certaines bibliothèques dont la plupart s'avère indispensable.
+Afin de parfaire le code du joueur, il est nécessaire d'utiliser certaines bibliothèques dont la plupart s'avèrent indispensables.
 
 `socket`: socket est une bibliothèque qui permet d'établir la connexion entre le client et le serveur au moyen de `l'adresse IP` et du `port`. Il permet au serveur ainsi qu'au client d'envoyer et de recevoir des informations, requêtes ou autres.
 
