@@ -119,7 +119,7 @@ def listposblockeravailable(listblockeravailable, board, posblocker, posblocker2
 
 La logique de placement des bloqueurs est la suivante :
 
-`true_indices` étant la liste qui renvoie `True` or `False` pour chaque fonction de la liste
+`true_indices` étant la liste qui renvoie `True` or `False` pour chaque fonction de la liste de bloqueurs
 
 ```py
 if 0 in true_indices:    
