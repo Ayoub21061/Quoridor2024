@@ -10,12 +10,8 @@ def send_json_data(json_data, server_address):
         s.connect(server_address)
         json_string = json.dumps(json_data)
         s.sendall(json_string.encode())
-        response = s.recv(204800)
-        #print("Réponse du serveur:", response.decode())
-        # with open("partie5.txt", "a") as fichier:
-        #     fichier.write(str(response.decode())+"\n")
-
-
+        response = s.recv(2048000)
+        print("Réponse du serveur:", response.decode())
 
 def player_mover(server_json):
 
@@ -25,7 +21,6 @@ def player_mover(server_json):
     position = get_position(server_json, player)
     blockeravailable = server_json['state']['blockers'][player]
     play = moveorblocker(blockeravailable)
-    #play = "blocker"
     if play == 'blocker':
         opponent_player = get_opponent_player(player)
         opponent_position = get_position(server_json, opponent_player)
@@ -296,8 +291,6 @@ def blocker_right(listblockeravailableup ,listblockeravailabledown, listblockera
             return False
     
 def blocker_vert_right_up(board, posblocker, posblocker2):  
-    #posblocker = opponent_position[1]
-    #posblocker2 = opponent_position[0]
     if posblocker == 16:
         return False
     elif posblocker2 < 2:
@@ -315,9 +308,7 @@ def blocker_vert_right_up(board, posblocker, posblocker2):
             return False
     
 def blocker_vert_left_up(board, posblocker, posblocker2):  
-    #posblocker = opponent_position[1]
-    #posblocker2 = opponent_position[0]
-    if posblocker == 0:
+    if posblocker == 16:
         return False
     elif posblocker2 < 2:
         return False
@@ -371,7 +362,6 @@ def blocker_vert_left_down(board, posblocker, posblocker2):
         else: 
             return False
     
-
 def play_blocker(blockerlist, pos1, pos2):
     return {
     "type": "blocker", 
@@ -383,7 +373,6 @@ def play_blocker_vertical(blockerlist, blockerlist2, pos1, pos2):
     "type": "blocker", 
     "position": [[blockerlist,pos1], [blockerlist2,pos2]]
 } 
-
 
 def get_opponent_player(player):
     if player == 0:
@@ -462,10 +451,6 @@ def down_jump_move(position):
     "position": [[position[0] + 4, position[1]]]
   }
   
-def get_random_true_index(move_available):
-    true_indices = [i for i, val in enumerate(move_available) if val]  # Obtient les indices des éléments True
-    return random.choice(true_indices)  # Retourne un indice aléatoire parmi les éléments True
-
 def get_list_position_true_index(move_available):
     return [i for i, val in enumerate(move_available) if val]
 
@@ -475,7 +460,6 @@ def right_available(board, position):
         return False
     else:
         listcase = board[position[0]] # Je récupère la liste dans laquelle je me trouve mais dans logique du jeu je regarde le déplacement horizontale 
-        #print(listcase)
         if listcase[position[1]+ 1] == 3 and listcase[position[1]+ 2] == 2: # Si je me déplaces à droite et que c'est un blocker vide et que c'est une case vide 
             return True
         else:
@@ -496,7 +480,6 @@ def up_available(board, position):
         return False
     else:
         listcase = board[position[0]-2] # Je récupère la liste dans laquelle je me trouve mais dans logique du jeu je regarde le déplacement verticale 
-        #print(f'listcase{listcase}')
         listblocker = board[position[0]-1] # La liste où il y'a le blocker
         if listblocker[position[1]] == 3 and listcase[position[1]] == 2: # Si je me déplaces en haut et que c'est un blocker vide et que c'est une case vide 
             return True
@@ -508,7 +491,6 @@ def down_available(board, position):
         return False
     else:
         listcase = board[position[0]+2] # Je récupère la liste dans laquelle je me trouve mais dans logique du jeu je regarde le déplacement verticale 
-        #print(f'listcase{listcase}')
         listblocker = board[position[0]+1] # La liste où il y'a le blocker
         if listblocker[position[1]] == 3 and listcase[position[1]] == 2: # Si je me déplaces en bas et que c'est un blocker vide et que c'est une case vide 
             return True
@@ -520,10 +502,6 @@ def right_jump_available(board, position, opponent_player):
         return False
     else:
         listcase = board[position[0]]
-        # position = [2,8]
-        # position[0] = 2
-        # board[0] = liste d'indice 0
-        # board[position[0]] = board[2] = liste d'indice 2
         if listcase[position[1] + 2] == opponent_player and listcase[position[1] + 1] == 3 and listcase[position[1] + 3] == 3: 
             return True
         else:
@@ -562,14 +540,8 @@ def down_jump_available(board, position, opponent_player):
             return True
         else:
             return False
-    
-    
-    
+     
 def callfunction(board, position, opponent_player):
-
-    # with open("partie5.txt", "a") as fichier:
-# Convertir la variable en chaîne de caractères et l'écrire dans le fichier
-        # fichier.write("Callfunction"+"\n")
 
     listefunction = []
     listefunction.append(right_available(board, position))
@@ -581,11 +553,6 @@ def callfunction(board, position, opponent_player):
     listefunction.append(up_jump_available(board,position,opponent_player))
     listefunction.append(down_jump_available(board,position,opponent_player))
 
-# # Ouvrir le fichier en mode écriture
-#     with open("partie5.txt", "a") as fichier:
-# # Convertir la variable en chaîne de caractères et l'écrire dans le fichier
-#         fichier.write(str(listefunction)+"\n")
-
     return listefunction
 
 def get_position(server_json, player): # Indique position de où je suis 
@@ -593,15 +560,13 @@ def get_position(server_json, player): # Indique position de où je suis
 
 # [0,8] pour 0 et [16,8] pour 1
     for indicelist, elem in enumerate(board):  # Parcourt les 17 listes 
-        #print(f'player{player}')
         if player in elem:  # Vérifie si zéro est présent dans la liste
             pos_in_list = elem.index(player)  # Obtient la position de zéro dans la liste
-            #print(f'positionduplayer{[indicelist, pos_in_list] }')
             return [indicelist, pos_in_list]  # Renvoie le numéro de la liste et la position de zéro dans cette liste
 
 def handle_ping_pong():
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.bind(('0.0.0.0', 8850))
+        s.bind(('0.0.0.0', 7777))
         s.listen()
         while True:
             player, address = s.accept()
@@ -613,37 +578,25 @@ def handle_ping_pong():
                     response_pong = {"response": "pong"}
                     response_pong_json = json.dumps(response_pong)
                     player.sendall(response_pong_json.encode())
-                    #print("Pong envoyé au serveur en réponse à la requête de ping.")
                 elif server_json["request"] == "play":
                     lives = server_json["lives"]
                     state = server_json["state"]
                     errors = server_json["errors"]
                     player_move = player_mover(server_json)
 
-                    # # Ouvrir le fichier en mode écriture
-                    # with open("partie5.txt", "a") as fichier:
-                    # # Convertir la variable en chaîne de caractères et l'écrire dans le fichier
-                    #     fichier.write(str(player_move)+"\n")
-                        
-
-
-
-                    # print(f'Réponse : {move_played} , {player_move}')
                     global message
                     response_move_string = {"response": "move", "move": player_move, "message": message}
                     message = "Too far for Ronaldo to think about it"
                     print(response_move_string)
                     response_move_json = json.dumps(response_move_string)
                     player.sendall(response_move_json.encode())
-                    #print("Coup joué et réponse envoyée au serveur.")
-                    
 
 # Les données JSON que je dois envoyer
 json_data = {
     "request": "subscribe",
-    "port": 8850,
+    "port": 7777,
     "name": "Ayoub",
-    "matricules": ["21061", "56625"]
+    "matricules": ["21061", "23232"]
 }
 
 # Définir l'adresse IP et le port du serveur local
@@ -653,10 +606,4 @@ send_json_data(json_data, server_address)
 handle_ping_pong()
 
 # Définir limite de placement des blockers (doit laisser 1 chemin au min.)
-# Définir le contour du plateau de jeu pour blocker verticaux. -> Made
-# Demander comment éviter le cas avec 5 -> Made
-# Demander pourquoi il met que des blockers verticaux -> Made
-# Demander comment mettre le MinMax ou BFS -> Made
-# Régler le problème avec le None quand on joue à gauche du plateau -> Problème vient des bloqueurs
-# Faire le README
 # Faire les tests
