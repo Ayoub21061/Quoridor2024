@@ -7,9 +7,9 @@
 Bienvenue dans ce dépôt, je suis Ayoub (21061), élève de 2ème bachelier à l'ECAM. Dans le cadre d'un projet en informatique, 
 L'objectif est de pouvoir créer un joueur capable de jouer au célèbre jeu `Quoridor`. 
 
-Afin de comprendre au mieux, vous trouvez les explications nécessaires pour comprendre au mieux le [code du jeu](https://github.com/qlurkin/PI2CChampionshipRunner/blob/main/games/quoridor/README.md) ainsi que les [étapes nécessaires pour pouvoir se connecter au serveur hôte du jeu](https://github.com/qlurkin/PI2CChampionshipRunner/blob/main/README.md)
+Afin de comprendre au mieux, vous trouvez les explications nécessaires concernant le [code du jeu](https://github.com/qlurkin/PI2CChampionshipRunner/blob/main/games/quoridor/README.md) ainsi que les [étapes nécessaires pour pouvoir se connecter au serveur hôte du jeu](https://github.com/qlurkin/PI2CChampionshipRunner/blob/main/README.md)
 
-Quoridor est un jeu de société dans lequel les règles sont les suivantes: Deux joueurs se font face sur un plateau. Chaque joueur a la possibilité de jouer un déplacement ou un bloqueur lors de chaque tour. L'objectif est d'arriver dans le camp adverse le plus vite possible. Pour ce faire, il est important d'élaborer certaines stratégies de jeu en réflechissant au mouvement et placement de bloqueurs possible selon l'état du jeu actuel.
+Quoridor est un jeu de société dans lequel les règles sont les suivantes: Deux joueurs se font face sur un plateau. Chaque joueur a la possibilité de jouer un déplacement ou un bloqueur lors de chaque tour. L'objectif est d'arriver dans le camp adverse le plus vite possible. Pour ce faire, il est important d'élaborer certaines stratégies de jeu en réflechissant au mouvement et placement de bloqueurs possibles selon l'état du jeu actuel.
 
 C'est pourquoi il est nécessaire d'établir une stratégie afin d'optimiser les chances de vaincre l'adverse.
 
