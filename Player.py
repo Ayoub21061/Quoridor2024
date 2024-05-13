@@ -291,7 +291,7 @@ def blocker_right(listblockeravailableup ,listblockeravailabledown, listblockera
             return False
     
 def blocker_vert_right_up(board, posblocker, posblocker2):  
-    if posblocker == 16:
+    if posblocker == 0:
         return False
     elif posblocker2 < 2:
         return False 
@@ -308,7 +308,7 @@ def blocker_vert_right_up(board, posblocker, posblocker2):
             return False
     
 def blocker_vert_left_up(board, posblocker, posblocker2):  
-    if posblocker == 16:
+    if posblocker == 0:
         return False
     elif posblocker2 < 2:
         return False
@@ -327,7 +327,7 @@ def blocker_vert_left_up(board, posblocker, posblocker2):
 def blocker_vert_right_down(board, posblocker, posblocker2):  
     #posblocker = opponent_position[1]
     #posblocker2 = opponent_position[0]
-    if posblocker == 0:
+    if posblocker == 16:
         return False
     elif posblocker2 > 14:
         return False
@@ -346,7 +346,7 @@ def blocker_vert_right_down(board, posblocker, posblocker2):
 def blocker_vert_left_down(board, posblocker, posblocker2):  
     #posblocker = opponent_position[1]
     #posblocker2 = opponent_position[0]
-    if posblocker == 0:
+    if posblocker == 16:
         return False
     elif posblocker2 > 14:
         return False
@@ -602,8 +602,8 @@ json_data = {
 # Définir l'adresse IP et le port du serveur local
 server_address = ('localhost', 3000)
 
-send_json_data(json_data, server_address)
-handle_ping_pong()
+# send_json_data(json_data, server_address)
+# handle_ping_pong()
 
 # Définir limite de placement des blockers (doit laisser 1 chemin au min.)
 # Faire les tests
