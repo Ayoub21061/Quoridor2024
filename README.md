@@ -146,6 +146,8 @@ Afin de parfaire le code du joueur, il est nécessaire d'utiliser certaines bibl
 
 `JSON`: Plus connu sous le nom de JavaScript Object Notation, est un langage au format de donnée textuel. Dans le cadre du code établi, il est l'objet des élements envoyés grâce au socket : Les requêtes du serveur ainsi que celles du client sont au format JSON. La transmission de ces informations doit passer par ce langage et sont converti en string afin que chaque parti puisse décoder l'information qui lui parvient.
 
+`random`: la bibliothèque random permet de choisir un nombre aléatoire dans un intervalle donné dans le code. Elle est utile pour les tests qui sont effectués sur le code."
+
 
 
 
