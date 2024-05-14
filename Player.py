@@ -596,14 +596,14 @@ json_data = {
     "request": "subscribe",
     "port": 7777,
     "name": "Ayoub",
-    "matricules": ["21061", "23232"]
+    "matricules": ["21061"]
 }
 
 # Définir l'adresse IP et le port du serveur local
 server_address = ('localhost', 3000)
 
-# send_json_data(json_data, server_address)
-# handle_ping_pong()
+send_json_data(json_data, server_address)
+handle_ping_pong()
 
 # Définir limite de placement des blockers (doit laisser 1 chemin au min.)
 # Faire les tests
