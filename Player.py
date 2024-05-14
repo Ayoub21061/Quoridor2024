@@ -3,14 +3,14 @@ import json
 import random
 
 move_played = 0
-message = "Too far for Ronaldo to think about it"
+message = "Je veux mes points"
 
 def send_json_data(json_data, server_address):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect(server_address)
         json_string = json.dumps(json_data)
         s.sendall(json_string.encode())
-        response = s.recv(2048000)
+        response = s.recv(2048000000)
         print("Réponse du serveur:", response.decode())
 
 def player_mover(server_json):
@@ -571,7 +571,7 @@ def handle_ping_pong():
         while True:
             player, address = s.accept()
             with player:
-                server_request = player.recv(204800).decode()
+                server_request = player.recv(2048000000).decode()
                 server_json = json.loads(server_request)
                 print("Requête du serveur:", server_json)
                 if server_json["request"] == "ping":
@@ -586,7 +586,7 @@ def handle_ping_pong():
 
                     global message
                     response_move_string = {"response": "move", "move": player_move, "message": message}
-                    message = "Too far for Ronaldo to think about it"
+                    message = "Je veux mes points"
                     print(response_move_string)
                     response_move_json = json.dumps(response_move_string)
                     player.sendall(response_move_json.encode())
@@ -600,10 +600,8 @@ json_data = {
 }
 
 # Définir l'adresse IP et le port du serveur local
-server_address = ('localhost', 3000)
+server_address = ('172.17.10.59', 3000)
 
 send_json_data(json_data, server_address)
 handle_ping_pong()
 
-# Définir limite de placement des blockers (doit laisser 1 chemin au min.)
-# Faire les tests
